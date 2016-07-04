@@ -14,19 +14,22 @@ class HomeController {
         this.weathers={};
         this.unitFlag='metric';
         this.waiting=false;
+        this.showSearch=true;
     }
 
     day(date) {
         this.toggle();
 
-        this.weather = this.weathers.list.filter(function (item) {
-            return item.dt === date;
-        })[0];
+        this.hourlyWeather = this.weathers.list.filter(function (item) {
+            return item.date === date;
+        });
     }
 
     toggle() {
         this.weekFlag = !this.weekFlag;
         this.dayFlag = !this.dayFlag;
+        this.showSearch = !this.showSearch;
+
     }
 
     showWeek() {

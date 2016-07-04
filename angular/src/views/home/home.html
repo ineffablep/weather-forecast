@@ -1,5 +1,9 @@
-<nav class="navbar navbar-default" role="navigation">
-    <form name="form" class="navbar-form navbar-left" role="form" novalidate>
+<div class="row padding-top" ng-show="home.showSearch()">
+    <h2>
+        Please enter city to get forecasts
+    </h2>
+    <br>
+    <form name="form" class="form-inline" role="form" novalidate>
         <!-- <label>{{title}}</label> -->
         <label for="units">Units</label>
         <select id="units" class="form-control" required
@@ -18,7 +22,7 @@
             Search
         </button>
     </form>
-</nav>
+</div>
 
 
 <div ng-show="home.notFoundError" class="alert alert-danger alert-dismissible" role="alert">
@@ -28,35 +32,78 @@
 </div>
 
 
-<div id="weekDiv" ng-show="home.showWeek()">
+<div id="weekDiv" class="row" ng-show="home.showWeek()">
     <h2>Weather forecast for {{home.search.city}}</h2>
+    <h6>Please click on row for hourly forecast</h6>
     <div class="row">
-        <div class="col-md-2" ng-repeat="weather in home.weathers.daily">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <span>{{weather.day}}</span>
-                    <span>{{weather.date}}</span>
-                </div>
-                <div class="panel-body">
-                    <div class="row" align="centre">
-                        <img ng-src="http://openweathermap.org/img/w/{{weather.icon}}.png"> <br/>
-                        {{weather.text}}
-                    </div>
-                    <div class="row" align="centre">
-                        <h4 class="label label-success"> High {{weather.tmin}}{{home.unitFlag}}</h4>
-                        <h4 class="label label-warning"> Low {{weather.tmax}}{{home.unitFlag}}</h4>
-                    </div>
+        <table class="table table-condensed  table-hover table-responsive">
+            <thead>
+            <th>Day</th>
+            <th>Weather</th>
+            <th>Max</th>
+            <th>Min</th>
+            <th>
+                Wind
+                Pressure
+                Perception
+            </th>
 
-                </div>
-                <div class="panel-footer">
-                    <span class="badge"> Wind  {{weather.gust}}</span>
-                    <span class="badge"> Pressure   {{weather.pressure}}</span>
-                    <span class="badge"> Perception  {{weather.perception *100}} %</span>
+            </thead>
+            <tbody class="cursor" ng-repeat="weather in home.weathers.daily">
+            <tr ng-click="home.day(weather.date);$event.preventDefault(); $event.stopPropagation();">
+                <td>
+                    {{weather.day}}
+                </td>
+                <td>
+                    <img ng-src="http://openweathermap.org/img/w/{{weather.icon}}.png">
+                </td>
+                <td>
+                    <h4 class="label label-success"> High {{weather.tmin}}{{home.unitFlag}} </h4>
+                </td>
+                <td>
+                    <h4 class="label label-warning"> Low {{weather.tmax}}{{home.unitFlag}}</h4>
+                </td>
+                <td>
+                    <span class="badge">{{weather.gust}}</span>
+                    <span class="badge">{{weather.pressure}}</span>
+                    <span class="badge">{{weather.perception *100}} %</span>
 
-                </div>
-            </div>
-        </div>
+                </td>
+                <td>
+                    <a class="btn">
+                        <i class="glyphicon glyphicon-chevron-right"></i> </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
     </div>
+</div>
+
+
+<div id="dayDiv" ng-show="home.showDay()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-circle-arrow-left" ng-click="home.toggle()"></span>
+            <strong>{{home.search.city}} </strong> {{home.weather.date}}
+        </div>
+        <ul class="list-group" ng-repeat="weather in home.hourlyWeather">
+            <li class="list-group-item  slide-animate">
+                {{weather.time}}
+                <img title="{{weather.text}}"
+                     ng-src="http://openweathermap.org/img/w/{{weather.icon}}.png"/>
+                <span class="margin-2"> {{weather.text}}</span>
+                <span class="label label-default margin-2">{{weather.tmin}}{{unitFlag}}</span>
+                <span class="label label-warning margin-2">{{weather.tmax}}{{unitFlag}}</span>
+                <span class="badge">Pressure: {{weather.pressure}}hpa</span>
+                <span class="badge">Humidity: {{weather.perception*100}}%</span>
+                <span class="badge">Wind: {{weather.gust}}m/s {{weather.deg}}°</span>
+
+            </li>
+        </ul>
+    </div>
+
 </div>
 
 
