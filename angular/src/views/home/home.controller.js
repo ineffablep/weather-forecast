@@ -14,7 +14,7 @@ class HomeController {
         this.weathers={};
         this.unitFlag='metric';
         this.waiting=false;
-        this.showSearch=true;
+        this.canSearch=true;
     }
 
     day(date) {
@@ -28,7 +28,7 @@ class HomeController {
     toggle() {
         this.weekFlag = !this.weekFlag;
         this.dayFlag = !this.dayFlag;
-        this.showSearch = !this.showSearch;
+        this.canSearch = !this.canSearch;
 
     }
 
@@ -38,6 +38,9 @@ class HomeController {
 
     showDay() {
         return this.dayFlag;
+    }
+    showSearch() {
+        return this.canSearch;
     }
 
     getForeCast() {
