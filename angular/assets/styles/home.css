@@ -1,0 +1,24 @@
+.padding-top {
+  padding-top: 50px;
+}
+
+.margin-2 {
+  margin:0 5px;
+}
+
+.cursor{
+  cursor: pointer;
+}
+@media (max-width: 1040px) {
+  .row{
+    margin:1px;
+  }
+}
+@media (max-width: 736px) {
+    .btn-sm {
+        margin-top: 10px;
+    }
+    .panel-heading {
+     width: 100%;
+    }
+}

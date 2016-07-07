@@ -1,49 +1,39 @@
-var webpackConfig = require('./webpack.test');
+var webpack = require('karma-webpack');
+var webpackConfig = require('./webpack.config');
 
-// Reference: http://karma-runner.github.io/0.12/config/configuration-file.html
-module.exports = function karmaConfig (config) {
+module.exports = function (config) {
   config.set({
-    frameworks: [
-      // Reference: https://github.com/karma-runner/karma-jasmine
-      // Set framework to jasmine
-      'jasmine'
-    ],
-
-    reporters: [
-      // Reference: https://github.com/mlex/karma-spec-reporter
-      // Set reporter to print detailed results to console
-      'spec',
-
-      // Reference: https://github.com/karma-runner/karma-coverage
-      // Output code coverage files
-      'coverage'
-    ],
-
+    frameworks: [ 'jasmine' ],
     files: [
-      // Grab all files in the app folder that contain .test.
-      'src/tests.webpack.js'
+      './node_modules/angular-mocks/angular-mocks.js',
+      './node_modules/phantomjs-polyfill/bind-polyfill.js',
+      'tests/**/*.js'
     ],
-
+    plugins: [
+      webpack,
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-firefox-launcher',
+      'karma-phantomjs-launcher',
+      'karma-coverage',
+      'karma-spec-reporter'
+    ],
+    browsers: [ 'Chrome' ],
     preprocessors: {
-      // Reference: http://webpack.github.io/docs/testing.html
-      // Reference: https://github.com/webpack/karma-webpack
-      // Convert files with webpack and load sourcemaps
-      'src/tests.webpack.js': ['webpack', 'sourcemap']
+      'tests/**/*.js': ['webpack'],
+      'src/**/*.js': ['webpack']
     },
-
-    browsers: [
-      // Run tests using PhantomJS
-      'PhantomJS'
-    ],
-
-    singleRun: true,
-
-    // Configure code coverage reporter
+    reporters: [ 'spec', 'coverage' ],
     coverageReporter: {
-      dir: 'build/coverage/',
-      type: 'html'
+      dir: 'build/reports/coverage',
+      reporters: [
+        { type: 'html', subdir: 'report-html' },
+        { type: 'lcov', subdir: 'report-lcov' },
+        { type: 'cobertura', subdir: '.', file: 'cobertura.txt' }
+      ]
     },
-
-    webpack: webpackConfig
+    logLevel: config.LOG_DEBUG,
+    webpack: webpackConfig,
+    webpackMiddleware: { noInfo: true }
   });
 };

@@ -1,0 +1,40 @@
+.padding-top {
+    padding-top: 50px;
+}
+
+.margin-2 {
+    margin: 0 5px;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+@media (max-width: 1040px) {
+    .row {
+        margin: 1px;
+    }
+}
+
+@media (max-width: 736px) {
+    .btn-sm {
+        margin-top: 10px;
+    }
+    .panel-heading {
+        width: 100%;
+    }
+}
+
+h1 {
+    color: dodgerblue;
+}
+
+.spin {
+    -webkit-transform-origin: 50% 58%;
+    transform-origin: 50% 58%;
+    -ms-transform-origin: 50% 58%; /* IE 9 */
+    -webkit-animation: spin .2s infinite linear;
+    -moz-animation: spin .2s infinite linear;
+    -o-animation: spin .2s infinite linear;
+    animation: spin .2s infinite linear;
+}

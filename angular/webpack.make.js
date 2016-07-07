@@ -32,7 +32,7 @@ module.exports = function makeWebpackConfig (options) {
     config.entry = {}
   } else {
     config.entry = {
-      app: './src/app.js'
+      app: './js/app.js'
     }
   }
 
@@ -85,7 +85,7 @@ module.exports = function makeWebpackConfig (options) {
 
   // Initialize module
   config.module = {
-    preLoaders: [],
+    preLoaders:[],
     loaders: [{
       // JS LOADER
       // Reference: https://github.com/babel/babel-loader
@@ -123,7 +123,7 @@ module.exports = function makeWebpackConfig (options) {
         /node_modules/,
         /\.test\.js$/
       ],
-      loader: 'isparta-instrumenter'
+      loader: 'isparta-loader'
     })
   }
 
@@ -183,28 +183,30 @@ module.exports = function makeWebpackConfig (options) {
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
     // Render index.html
     config.plugins.push(
-      new HtmlWebpackPlugin({
-        template: './src/index.html',
-        inject: 'body',
-        minify: BUILD
-      })
+        new HtmlWebpackPlugin({
+          template: './index.html',
+          inject: 'body',
+          minify:  {
+            removeAttributeQuotes: true
+          }
+        })
     )
   }
 
   // Add build specific plugins
   if (BUILD) {
     config.plugins.push(
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
-      // Only emit files when there are no errors
-      new webpack.NoErrorsPlugin(),
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
+        // Only emit files when there are no errors
+        new webpack.NoErrorsPlugin(),
 
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
-      // Dedupe modules in the output
-      new webpack.optimize.DedupePlugin(),
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
+        // Dedupe modules in the output
+        new webpack.optimize.DedupePlugin(),
 
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-      // Minify all javascript, switch loaders to minimizing mode
-      new webpack.optimize.UglifyJsPlugin()
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+        // Minify all javascript, switch loaders to minimizing mode
+        new webpack.optimize.UglifyJsPlugin()
     )
   }
 

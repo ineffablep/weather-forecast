@@ -1,0 +1,128 @@
+<div class="row padding-top" ng-show="home.showSearch() && !home.waiting">
+    <h2>
+        Please enter city to get forecasts
+    </h2>
+    <br>
+    <form name="form" class="form-inline" role="form" novalidate>
+        <!-- <label>{{title}}</label> -->
+        <label for="units">Units</label>
+        <select id="units" class="form-control" required
+                ng-model="home.search.units">
+            <option value="metric">Metric(°C)</option>
+            <option value="imperial">Imperial(°F)</option>
+        </select>
+        <label for="city">City</label>
+        <input type="text" id="city" class="form-control" placeholder="Please input city"
+               ng-model="home.search.city" auto-city required>
+        <button class="btn btn-primary btn-sm"
+                ng-click="home.getForeCast()"
+                data-loading-text="Loading..." autocomplete="off"
+                ng-disabled="form.$invalid || home.waiting">
+            <span class="glyphicon glyphicon-search"></span>
+            Search
+        </button>
+    </form>
+</div>
+
+
+<div ng-show="home.notFoundError" class="alert alert-danger alert-dismissible" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <span class="sr-only">Error:</span>
+    This city is not found, please check you input...
+</div>
+
+
+<div id="weekDiv" class="row" ng-show="home.showWeek()">
+    <h2>Weather forecast for {{home.search.city}}</h2>
+    <h6>Please click on row for hourly forecast</h6>
+    <div class="row">
+        <table class="table table-condensed  table-hover table-responsive">
+            <thead>
+            <th>Day</th>
+            <th>Weather</th>
+            <th>Max</th>
+            <th>Min</th>
+            <th>
+                Wind
+                Pressure
+                Perception
+            </th>
+            </thead>
+            <tbody class="cursor" ng-repeat="weather in home.weathers.daily">
+            <tr ng-click="home.day(weather.date);$event.preventDefault(); $event.stopPropagation();">
+                <td>
+                    {{weather.day}}
+                </td>
+                <td>
+                    <img ng-src="http://openweathermap.org/img/w/{{weather.icon}}.png">
+                </td>
+                <td>
+                    <h4 class="label label-success"> High {{weather.tmin}}{{home.unitFlag}} </h4>
+                </td>
+                <td>
+                    <h4 class="label label-warning"> Low {{weather.tmax}}{{home.unitFlag}}</h4>
+                </td>
+                <td>
+                    <span class="badge">{{weather.gust}} m/s</span>
+                    <span class="badge">{{weather.pressure}} hpa</span>
+                    <span class="badge">{{weather.perception *100}} %</span>
+
+                </td>
+                <td>
+                    <a class="btn">
+                        <i class="glyphicon glyphicon-chevron-right"></i> </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="progress" ng-show="home.waiting">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="70"
+         aria-valuemin="0" aria-valuemax="100" style="width:70%">
+        Loading ....
+    </div>
+</div>
+
+<div id="dayDiv" class="row padding-top" ng-show="home.showDay()">
+        <div class="panel-heading bg-primary">
+        <span class="glyphicon glyphicon-circle-arrow-left" ng-click="home.toggle()"></span>
+        <strong>{{home.search.city}} </strong> {{home.weather.date}}
+    </div>
+    <table class="table table-responsive table-hover">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Weather</th>
+            <th>Temperature {{unitFlag}}</th>
+            <th>
+                Pressure <br/>
+                Humidity<br/>
+                Wind<br/>
+            </th>
+        </tr>
+
+        </thead>
+        <tbody ng-repeat="weather in home.hourlyWeather">
+        <tr>
+            <td> {{weather.time}}</td>
+            <td>
+                <img title="{{weather.text}}"
+                     ng-src="http://openweathermap.org/img/w/{{weather.icon}}.png"/>
+                <span class="margin-2"> {{weather.text}}</span>
+            </td>
+            <td>
+                {{weather.temp}} {{home.unitFlag}}
+            </td>
+            <td>
+                <span class="badge">{{weather.pressure}} hpa</span>
+                <span class="badge">{{weather.perception*100}} %</span>
+                <span class="badge">{{weather.gust}} m/s </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
